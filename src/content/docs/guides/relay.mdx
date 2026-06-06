@@ -1,0 +1,100 @@
+---
+title: The relay (Web)
+description: Deploy a tiny serverless function that holds your GitHub token, so the browser never does.
+---
+
+import { Tabs, TabItem, Aside, Steps } from '@astrojs/starlight/components'
+
+A browser can't safely hold a writable GitHub token — anything shipped to the page is world-readable. So the web SDK POSTs feedback to a **relay you operate**: one small serverless function that holds the credential, does abuse control, and creates the issue. You host it; you hold the token.
+
+<Aside type="tip">`@appfeedback/relay` is framework-agnostic. The same `handleFeedback` runs behind a Cloudflare Worker, a Vercel/Netlify function, Firebase, Appwrite, or your own server.</Aside>
+
+## What the relay does
+
+<Steps>
+1. **Verify** the submission (and an optional CAPTCHA token).
+2. **Throttle** — per-IP / global rate limits, dedupe, payload caps (you add what you need).
+3. **Format** the issue body via `@appfeedback/core` (identical to every platform).
+4. **Create** the GitHub issue with your server-held credential and return `{ issueNumber, issueUrl }`.
+</Steps>
+
+## Deploy it
+
+<Tabs>
+<TabItem label="Cloudflare / Vercel / Deno">
+
+`createFetchHandler` returns a standard `(Request) => Response` handler:
+
+```ts
+import { createFetchHandler } from '@appfeedback/relay'
+
+const handler = createFetchHandler({
+  githubToken: env.GITHUB_TOKEN, // server-only secret
+  owner: 'acme',
+  repo: 'feedback',
+})
+
+export default { fetch: handler } // Cloudflare Worker / Deno
+// Vercel/Netlify: `export const POST = (req) => handler(req)`
+```
+
+</TabItem>
+<TabItem label="Firebase">
+
+```ts
+import { onRequest } from 'firebase-functions/v2/https'
+import { firebaseHandler } from '@appfeedback/relay'
+
+export const feedback = onRequest(
+  firebaseHandler({ githubToken: process.env.GITHUB_TOKEN!, owner: 'acme', repo: 'feedback' }),
+)
+```
+
+</TabItem>
+<TabItem label="Appwrite">
+
+```ts
+import { appwriteHandler } from '@appfeedback/relay'
+
+export default appwriteHandler({
+  githubToken: process.env.GITHUB_TOKEN!,
+  owner: 'acme',
+  repo: 'feedback',
+})
+```
+
+</TabItem>
+<TabItem label="Custom backend">
+
+Any stack can implement the [relay HTTP contract](#the-contract) directly, or call the core handler:
+
+```ts
+import { handleFeedback } from '@appfeedback/relay'
+
+const result = await handleFeedback(requestBody, {
+  githubToken, owner, repo,
+  verifyCaptcha: async (token) => await turnstileVerify(token), // optional
+})
+```
+
+</TabItem>
+</Tabs>
+
+## Credentials
+
+Use a **GitHub App installation token** (1-hour, auto-rotated, scoped to one repo + `issues`/`contents`) for production, or a server-held **fine-grained PAT** scoped to a single repo for the simplest setup. Either way it lives only in the relay's environment.
+
+## The contract
+
+The browser POSTs JSON and gets back the issue number — so any backend can implement it:
+
+```jsonc
+// POST <relayEndpoint>
+{ "type": "bug", "title": "…", "description": "…", "contactEmail": null,
+  "extraFields": {}, "deviceInfo": { /* appName, appVersion, … osName: "Web" */ },
+  "captchaToken": null }
+// → 200
+{ "issueNumber": 123, "issueUrl": "https://github.com/acme/feedback/issues/123" }
+```
+
+Errors use `400` (invalid), `401/403` (auth/CAPTCHA), `413` (too large), `429` (rate-limited), `502` (GitHub upstream).

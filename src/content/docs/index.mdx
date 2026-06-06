@@ -1,0 +1,79 @@
+---
+title: AppFeedback
+description: One feedback SDK for Apple, Android, and Web — every submission becomes a GitHub issue in one byte-exact format.
+template: splash
+hero:
+  tagline: One feedback SDK for Apple, Android, and Web. Every report becomes a GitHub issue — in one byte-exact format, verified across platforms.
+  actions:
+    - text: Quickstart
+      link: /guides/quickstart/
+      icon: right-arrow
+      variant: primary
+    - text: GitHub
+      link: https://github.com/hayek/appfeedback-web
+      icon: external
+      variant: minimal
+---
+
+import { Tabs, TabItem, Card, CardGrid } from '@astrojs/starlight/components'
+
+## Three lines to a GitHub issue
+
+<Tabs syncKey="lang">
+  <TabItem label="Swift">
+    ```swift
+    let feedback = FeedbackClient(
+      appName: "Acme",
+      transport: GitHubDirectTransport(owner: "acme", repo: "feedback", token: token)
+    )
+    try await feedback.submit(.init(type: .bug, title: "Crash on launch", description: "Steps…"))
+    ```
+  </TabItem>
+  <TabItem label="TypeScript">
+    ```ts
+    import { mountFeedbackWidget } from '@appfeedback/widget'
+    import { RelayTransport } from '@appfeedback/core'
+
+    mountFeedbackWidget(el, {
+      transport: new RelayTransport({ endpoint: '/api/feedback' }),
+      appName: 'Acme', appVersion: '1.0.0',
+    })
+    ```
+  </TabItem>
+  <TabItem label="Kotlin">
+    ```kotlin
+    // The Android core ships today (byte-exact, conformance-verified).
+    // The client transport + Compose UI are in progress.
+    val body = IssueBodyFormatter.format(report, deviceInfo)
+    ```
+  </TabItem>
+</Tabs>
+
+## Why AppFeedback
+
+<CardGrid>
+  <Card title="One wire format" icon="list-format">
+    Every platform produces the **exact same** GitHub issue body — pinned by a shared spec and a golden-fixture conformance suite that runs in every SDK's CI. Apple, Android, and Web are byte-identical.
+  </Card>
+  <Card title="You hold the token" icon="approve-check-circle">
+    On the web, the SDK talks only to a relay **you** deploy — Cloudflare, Firebase, Appwrite, or your own. Your GitHub credential never ships to the browser.
+  </Card>
+  <Card title="Drop-in UI" icon="mobile-android">
+    A themeable feedback sheet on Apple and a feedback widget + React component on the web — or go headless and submit from your own UI.
+  </Card>
+  <Card title="GitHub is the backend" icon="github">
+    No new service to run. Feedback lands as a labelled GitHub issue your team already triages; the AppFeedback inbox reads it straight back.
+  </Card>
+</CardGrid>
+
+## How the web relay works
+
+<div class="afb-flow">
+  <div class="node"><b>Your app</b><span>collects feedback in the widget</span></div>
+  <div class="arrow">→</div>
+  <div class="node"><b>Your relay</b><span>holds the token, rate-limits, verifies CAPTCHA</span></div>
+  <div class="arrow">→</div>
+  <div class="node"><b>GitHub issue</b><span>created in your repo, returns the number</span></div>
+</div>
+
+Native apps (Apple, Android) can talk to GitHub directly with a Keychain-held token, or use the same relay. [See the security model →](/guides/security/)

@@ -1,0 +1,172 @@
+/* AppFeedback docs — "refined engineering / blueprint" theme.
+   Dark-first, warm-ink background, single amber accent, Fraunces display +
+   Public Sans body + JetBrains Mono code. */
+
+@import '@fontsource-variable/fraunces';
+@import '@fontsource-variable/public-sans';
+@import '@fontsource-variable/jetbrains-mono';
+
+:root {
+  --sl-font: 'Public Sans Variable', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  --sl-font-mono: 'JetBrains Mono Variable', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* Amber accent scale (dark) */
+  --sl-color-accent-low: #3a2700;
+  --sl-color-accent: #e6a019;
+  --sl-color-accent-high: #f7d28b;
+
+  --afb-amber: #e6a019;
+  --afb-amber-soft: #f7d28b;
+  --afb-hairline: color-mix(in oklab, var(--sl-color-gray-5) 70%, transparent);
+}
+
+/* Warm the dark ink slightly without disturbing Starlight's tuned grays. */
+:root[data-theme='dark'] {
+  --sl-color-bg: #100f0d;
+  --sl-color-bg-nav: #14120e;
+  --sl-color-bg-sidebar: #131210;
+}
+
+:root[data-theme='light'] {
+  --sl-color-accent-low: #ffedcc;
+  --sl-color-accent: #a96a00;
+  --sl-color-accent-high: #4a2f00;
+  --afb-amber: #b9760a;
+  --afb-amber-soft: #8a5800;
+  --sl-color-bg: #fbf8f1;
+}
+
+/* ---- Distinctive display type (Fraunces) ---- */
+:is(h1, h2, h3, h4),
+.sl-markdown-content :is(h1, h2, h3, h4),
+.hero h1,
+site-title,
+.site-title {
+  font-family: 'Fraunces Variable', Georgia, 'Times New Roman', serif;
+  font-weight: 540;
+  letter-spacing: -0.015em;
+  font-variation-settings: 'opsz' 40, 'SOFT' 28;
+}
+.site-title { font-weight: 640; }
+
+/* ---- Hero: blueprint grid + amber glow + grain ---- */
+.hero {
+  position: relative;
+  isolation: isolate;
+  padding-block: clamp(2.5rem, 8vw, 6rem);
+  border-bottom: 1px solid var(--afb-hairline);
+  overflow: clip;
+}
+.hero::before {
+  /* blueprint grid */
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  background-image:
+    linear-gradient(to right, var(--afb-hairline) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--afb-hairline) 1px, transparent 1px);
+  background-size: 44px 44px;
+  mask-image: radial-gradient(ellipse 80% 70% at 50% 30%, #000 30%, transparent 78%);
+  opacity: 0.5;
+}
+.hero::after {
+  /* amber glow */
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  background: radial-gradient(60% 50% at 50% 12%, color-mix(in oklab, var(--afb-amber) 22%, transparent), transparent 70%);
+  pointer-events: none;
+}
+.hero h1 {
+  font-size: clamp(2.6rem, 7vw, 4.6rem);
+  line-height: 1.02;
+  font-weight: 560;
+}
+.hero .tagline {
+  font-size: clamp(1.05rem, 2.4vw, 1.35rem);
+  color: var(--sl-color-gray-2);
+  max-width: 42ch;
+  margin-inline: auto;
+}
+/* staggered page-load reveal */
+.hero h1, .hero .tagline, .hero .sl-flex {
+  animation: afb-rise 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) backwards;
+}
+.hero .tagline { animation-delay: 0.08s; }
+.hero .sl-flex { animation-delay: 0.16s; }
+@keyframes afb-rise {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero h1, .hero .tagline, .hero .sl-flex { animation: none; }
+}
+
+/* Primary CTA gets the amber treatment */
+.hero a[data-variant='primary'] {
+  background: var(--afb-amber);
+  border-color: var(--afb-amber);
+  color: #1a1300;
+  font-weight: 600;
+}
+
+/* ---- Landing sections (the "splash" body) ---- */
+.sl-markdown-content :is(.afb-section-title) {
+  text-align: center;
+  margin-top: 3.5rem;
+}
+/* Code tab groups on the landing: premium framing */
+.sl-markdown-content starlight-tabs {
+  border: 1px solid var(--afb-hairline);
+  border-radius: 14px;
+  overflow: clip;
+  background: color-mix(in oklab, var(--sl-color-bg) 80%, #000);
+  box-shadow: 0 18px 50px -28px rgba(0, 0, 0, 0.8);
+}
+.sl-markdown-content starlight-tabs .tablist-wrapper { padding-inline: 0.4rem; }
+
+/* Feature cards: hairline + hover lift */
+.sl-markdown-content .card {
+  border: 1px solid var(--afb-hairline);
+  border-radius: 14px;
+  background: color-mix(in oklab, var(--sl-color-bg) 86%, #000);
+  transition: transform 0.18s ease, border-color 0.18s ease;
+}
+.sl-markdown-content .card:hover {
+  transform: translateY(-3px);
+  border-color: color-mix(in oklab, var(--afb-amber) 55%, var(--afb-hairline));
+}
+.sl-markdown-content .card .icon { color: var(--afb-amber); }
+
+/* ---- The app → relay → GitHub flow strip ---- */
+.afb-flow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  gap: 0.75rem;
+  margin: 2rem auto 0;
+  max-width: 52rem;
+}
+.afb-flow .node {
+  flex: 1 1 0;
+  min-width: 9rem;
+  border: 1px solid var(--afb-hairline);
+  border-radius: 12px;
+  padding: 1rem;
+  text-align: center;
+  background: color-mix(in oklab, var(--sl-color-bg) 86%, #000);
+}
+.afb-flow .node b { display: block; font-family: 'Fraunces Variable', serif; }
+.afb-flow .node span { font-size: 0.85rem; color: var(--sl-color-gray-3); }
+.afb-flow .arrow {
+  align-self: center;
+  color: var(--afb-amber);
+  font-family: var(--sl-font-mono);
+  font-size: 1.3rem;
+}
+@media (max-width: 38rem) { .afb-flow .arrow { transform: rotate(90deg); } }
+
+/* Code blocks: a touch more breathing room */
+.sl-markdown-content :not(pre) > code { color: var(--afb-amber-soft); }

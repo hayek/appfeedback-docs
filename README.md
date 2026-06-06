@@ -1,0 +1,26 @@
+# appfeedback-docs
+
+The documentation site for the [AppFeedback](https://github.com/hayek/appfeedback-web) SDK family (Apple · Android · Web), built with [Astro Starlight](https://starlight.astro.build).
+
+## Develop
+
+```bash
+pnpm install
+pnpm dev      # local dev server
+pnpm build    # static build → dist/
+pnpm preview  # preview the build
+```
+
+## Design
+
+A "refined engineering / blueprint" theme: dark-first warm ink, a single amber accent, **Fraunces** display + **Public Sans** body + **JetBrains Mono** code, and a blueprint-grid hero. Theme tokens live in `src/styles/theme.css` (it overrides Starlight's CSS custom properties — the amber accent, the fonts, and the landing/hero styling).
+
+## Structure
+
+- `src/content/docs/index.mdx` — landing (splash hero, multi-language quickstart tabs, feature cards, relay flow).
+- `src/content/docs/guides/` — quickstart, installation, the relay, security model, theming & localization.
+- `src/content/docs/reference/` — the wire format, and the per-language API references (DocC / Dokka / TypeDoc, generated into `/reference/{swift,kotlin,typescript}/` by CI — pending).
+
+## Deploy
+
+A GitHub Pages workflow lives in `.github/workflows/deploy.yml` (uses `withastro/action`). Enable Pages (Settings → Pages → Source: GitHub Actions). **For a project-page URL** (`hayek.github.io/appfeedback-docs`) set `base: '/appfeedback-docs'` + `site: 'https://hayek.github.io'` in `astro.config.mjs` first. Vercel and Cloudflare Pages also work with zero config (build command `pnpm build`, output `dist`).

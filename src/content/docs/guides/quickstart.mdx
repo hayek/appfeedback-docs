@@ -1,0 +1,107 @@
+---
+title: Quickstart
+description: Submit your first piece of feedback as a GitHub issue — on Apple, Web, or Android.
+---
+
+import { Tabs, TabItem, Steps, Aside } from '@astrojs/starlight/components'
+
+Every path below ends with a real, labelled GitHub issue in your repo. Pick your platform.
+
+<Tabs syncKey="lang">
+<TabItem label="Apple (Swift)">
+
+<Steps>
+
+1. Add the package (see [Installation](/guides/installation/)), importing `AppFeedbackCore` (and `AppFeedbackUI` for the drop-in sheet).
+
+2. Build a client once at app start:
+
+   ```swift
+   import AppFeedbackCore
+
+   let feedback = FeedbackClient(
+     appName: "Acme",
+     transport: GitHubDirectTransport(owner: "acme", repo: "feedback", token: token)
+   )
+   ```
+
+3. Submit a report:
+
+   ```swift
+   let issueNumber = try await feedback.submit(
+     FeedbackReport(type: .bug, title: "Crash on launch", description: "Steps to reproduce…")
+   )
+   ```
+
+4. Or present the drop-in SwiftUI sheet:
+
+   ```swift
+   import AppFeedbackUI
+
+   .sheet(isPresented: $showFeedback) {
+     FeedbackSheet(client: feedback, theme: .default)
+   }
+   ```
+
+</Steps>
+
+<Aside title="Where does the token live?">A `GitHubDirectTransport` token stays in the app's Keychain — acceptable for a signed native app. For higher volume, point a custom transport at a relay you control. See the [security model](/guides/security/).</Aside>
+
+</TabItem>
+<TabItem label="Web (TypeScript)">
+
+The web SDK never holds a GitHub token — it talks to a [relay](/guides/relay/) you deploy.
+
+<Steps>
+
+1. Deploy a relay (one function — Cloudflare / Vercel / Firebase / Appwrite). See [The relay](/guides/relay/).
+
+2. Install and mount the widget:
+
+   ```ts
+   import { mountFeedbackWidget } from '@appfeedback/widget'
+   import { RelayTransport } from '@appfeedback/core'
+
+   mountFeedbackWidget(document.getElementById('feedback')!, {
+     transport: new RelayTransport({ endpoint: '/api/feedback' }),
+     appName: 'Acme',
+     appVersion: '1.0.0',
+   })
+   ```
+
+3. React app? Use the component instead:
+
+   ```tsx
+   import { FeedbackForm } from '@appfeedback/react'
+
+   <FeedbackForm
+     transport={new RelayTransport({ endpoint: '/api/feedback' })}
+     appName="Acme"
+     appVersion="1.0.0"
+   />
+   ```
+
+</Steps>
+
+</TabItem>
+<TabItem label="Android (Kotlin)">
+
+<Aside type="caution">The Android **core** (models, formatter/parser, transport interface) ships today and is byte-exact-verified against the shared conformance suite. The concrete transports and the Compose UI are in progress.</Aside>
+
+```kotlin
+import com.appfeedback.core.*
+
+val report = FeedbackReport(type = FeedbackType.BUG, title = "Crash", description = "Steps…")
+val device = DeviceInfo("Acme", "1.0", "1", Build.MODEL, "Android", Build.VERSION.RELEASE)
+
+// Produces the exact GitHub issue body the inbox parses — identical to Apple & Web.
+val body = IssueBodyFormatter.format(report, device)
+val labels = IssueBodyFormatter.labels(report.type) // ["bug", "user-submitted"]
+```
+
+</TabItem>
+</Tabs>
+
+## What lands in GitHub
+
+A labelled issue (`bug`/`feature-request` + `user-submitted`) whose body carries the description, a device-info block, optional contact email, and any attachments — in [one byte-exact format](/reference/wire-format/) across every platform.
