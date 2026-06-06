@@ -1,10 +1,10 @@
 import { defineConfig } from 'astro/config'
 import starlight from '@astrojs/starlight'
 
-// NOTE: `site` is a placeholder canonical URL; set it (and `base` for a GitHub
-// Pages project site) when the hosting target is finalized.
+// Deployed as a GitHub Pages project site at https://hayek.github.io/appfeedback-docs.
 export default defineConfig({
-  site: 'https://appfeedback.dev',
+  site: 'https://hayek.github.io',
+  base: '/appfeedback-docs',
   integrations: [
     starlight({
       title: 'AppFeedback',

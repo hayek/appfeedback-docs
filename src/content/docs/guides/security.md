@@ -13,7 +13,7 @@ A signed native binary is a black box. A GitHub token shipped inside it — held
 
 Everything a web page runs is readable by anyone — view-source, devtools, the JS bundle. **A writable token in browser JS is published to the world.** GitHub's CORS would even *accept* a direct browser call, which makes it more dangerous, not less: any visitor (or bot) could open issues, write files, and exhaust your shared rate limit (one credential = 5,000 req/hr and 500 issues/hr across *all* visitors). GitHub auto-revokes tokens pushed to a public repo — but **not** ones merely embedded in a deployed site, so a leak stays live.
 
-So on the web the default — and only production-safe — path is the [relay](/guides/relay/): the browser talks to a function **you** host, and your GitHub credential never leaves the server. This mirrors how every comparable SDK works (Sentry's DSN, Bugsnag/Instabug keys): the client only ever carries a public, write-only identifier.
+So on the web the default — and only production-safe — path is the [relay](../relay/): the browser talks to a function **you** host, and your GitHub credential never leaves the server. This mirrors how every comparable SDK works (Sentry's DSN, Bugsnag/Instabug keys): the client only ever carries a public, write-only identifier.
 
 ## The escape hatch: `dangerouslyUseClientToken`
 

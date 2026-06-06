@@ -12,7 +12,7 @@ Every path below ends with a real, labelled GitHub issue in your repo. Pick your
 
 <Steps>
 
-1. Add the package (see [Installation](/guides/installation/)), importing `AppFeedbackCore` (and `AppFeedbackUI` for the drop-in sheet).
+1. Add the package (see [Installation](../installation/)), importing `AppFeedbackCore` (and `AppFeedbackUI` for the drop-in sheet).
 
 2. Build a client once at app start:
 
@@ -45,16 +45,16 @@ Every path below ends with a real, labelled GitHub issue in your repo. Pick your
 
 </Steps>
 
-<Aside title="Where does the token live?">A `GitHubDirectTransport` token stays in the app's Keychain — acceptable for a signed native app. For higher volume, point a custom transport at a relay you control. See the [security model](/guides/security/).</Aside>
+<Aside title="Where does the token live?">A `GitHubDirectTransport` token stays in the app's Keychain — acceptable for a signed native app. For higher volume, point a custom transport at a relay you control. See the [security model](../security/).</Aside>
 
 </TabItem>
 <TabItem label="Web (TypeScript)">
 
-The web SDK never holds a GitHub token — it talks to a [relay](/guides/relay/) you deploy.
+The web SDK never holds a GitHub token — it talks to a [relay](../relay/) you deploy.
 
 <Steps>
 
-1. Deploy a relay (one function — Cloudflare / Vercel / Firebase / Appwrite). See [The relay](/guides/relay/).
+1. Deploy a relay (one function — Cloudflare / Vercel / Firebase / Appwrite). See [The relay](../relay/).
 
 2. Install and mount the widget:
 
@@ -104,4 +104,4 @@ val labels = IssueBodyFormatter.labels(report.type) // ["bug", "user-submitted"]
 
 ## What lands in GitHub
 
-A labelled issue (`bug`/`feature-request` + `user-submitted`) whose body carries the description, a device-info block, optional contact email, and any attachments — in [one byte-exact format](/reference/wire-format/) across every platform.
+A labelled issue (`bug`/`feature-request` + `user-submitted`) whose body carries the description, a device-info block, optional contact email, and any attachments — in [one byte-exact format](../../reference/wire-format/) across every platform.

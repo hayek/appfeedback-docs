@@ -47,4 +47,4 @@ FeedbackSheet(client: feedback, theme: theme)
 
 ## Localization, briefly
 
-Because all user-facing strings are injected, the SDK stays locale-agnostic and your app remains the single source of translations. The on-wire issue body is **not** localized — its field labels (`App:`, `Device:`, …) are part of the [wire format](/reference/wire-format/) the inbox parses, so they're fixed regardless of UI language.
+Because all user-facing strings are injected, the SDK stays locale-agnostic and your app remains the single source of translations. The on-wire issue body is **not** localized — its field labels (`App:`, `Device:`, …) are part of the [wire format](../../reference/wire-format/) the inbox parses, so they're fixed regardless of UI language.
