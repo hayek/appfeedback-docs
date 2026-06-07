@@ -30,7 +30,7 @@ JDK21="${JAVA_HOME_21:-/opt/homebrew/opt/openjdk@21/libexec/openjdk.jdk/Contents
 
 echo "==> Swift (DocC, combined AppFeedbackCore + AppFeedbackUI)"
 rm -rf "$OUT/swift"; mkdir -p "$OUT/swift"
-( cd "$SWIFT_DIR" && swift package --allow-writing-to-directory "$OUT/swift" \
+( cd "$SWIFT_DIR" && APPFEEDBACK_BUILD_DOCS=1 swift package --allow-writing-to-directory "$OUT/swift" \
     generate-documentation \
     --enable-experimental-combined-documentation \
     --target AppFeedbackCore --target AppFeedbackUI \
