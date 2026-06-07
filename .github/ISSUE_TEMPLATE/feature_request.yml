@@ -1,0 +1,26 @@
+name: Feature request
+description: Suggest new or improved content for the AppFeedback documentation.
+labels: [feature-request]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for the suggestion! Please describe what you were trying to learn
+        or do before the solution — it helps us find the best fit.
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem does this solve?
+      description: What were you trying to do, and where did the docs leave you stuck?
+    validations:
+      required: true
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed solution
+      description: The page, guide, or example you'd like to see.
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives
+      description: Other places you looked, or workarounds you found.

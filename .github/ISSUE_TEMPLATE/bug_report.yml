@@ -1,0 +1,37 @@
+name: Bug report
+description: Report an error or problem in the AppFeedback documentation site.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to file a bug. Please search existing issues
+        first, then fill in as much detail as you can — a link to the affected
+        page is the single most useful thing you can give us.
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: The error — a wrong/outdated instruction, a broken link, a rendering glitch, etc.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: The page URL and how to see the problem.
+      placeholder: |
+        1. Go to https://hayek.github.io/appfeedback-docs/...
+        2. Follow the steps in section ...
+        3. Observe ...
+  - type: input
+    id: version
+    attributes:
+      label: Platform / version
+      description: Browser (for rendering issues) or the SDK version the docs are out of step with.
+      placeholder: "Chrome 130, or docs vs. SDK main @abc1234"
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Anything else relevant — local build vs. live site, OS, etc.
