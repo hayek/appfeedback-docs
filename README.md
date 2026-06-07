@@ -1,6 +1,6 @@
 # appfeedback-docs
 
-The documentation site for the [AppFeedback](https://github.com/hayek/appfeedback-web) SDK family (Apple · Android · Web), built with [Astro Starlight](https://starlight.astro.build).
+The documentation site for the [AppFeedback](https://github.com/hayek) SDK family (Apple · Android · Web), built with [Astro Starlight](https://starlight.astro.build).
 
 ## Develop
 
@@ -23,4 +23,4 @@ A "refined engineering / blueprint" theme: dark-first warm ink, a single amber a
 
 ## Deploy
 
-A GitHub Pages workflow lives in `.github/workflows/deploy.yml` (uses `withastro/action`). Enable Pages (Settings → Pages → Source: GitHub Actions). **For a project-page URL** (`hayek.github.io/appfeedback-docs`) set `base: '/appfeedback-docs'` + `site: 'https://hayek.github.io'` in `astro.config.mjs` first. Vercel and Cloudflare Pages also work with zero config (build command `pnpm build`, output `dist`).
+Deployed to GitHub Pages via `.github/workflows/deploy.yml` (uses `withastro/action`). It's configured as a **project page** — `base: '/appfeedback-docs'` + `site: 'https://hayek.github.io'` in `astro.config.mjs` (change these if you deploy elsewhere). Vercel and Cloudflare Pages also work with zero config (build command `pnpm build`, output `dist`).

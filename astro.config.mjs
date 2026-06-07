@@ -19,7 +19,7 @@ export default defineConfig({
         { tag: 'meta', attrs: { name: 'twitter:image', content: 'https://hayek.github.io/appfeedback-docs/og.png' } },
       ],
       social: [
-        { icon: 'github', label: 'GitHub', href: 'https://github.com/hayek/appfeedback-web' },
+        { icon: 'github', label: 'GitHub', href: 'https://github.com/hayek?tab=repositories&q=appfeedback' },
       ],
       sidebar: [
         {

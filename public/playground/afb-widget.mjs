@@ -24,7 +24,9 @@ var DEFAULT_COPY = {
   submitting: "Sending\u2026",
   success: "Thanks for the feedback!",
   error: "Something went wrong. Please try again.",
-  validation: "Please add a summary and a description."
+  validation: "Please add a summary and a description.",
+  typeGroup: "Feedback type",
+  formLabel: "Feedback form"
 };
 var STYLE = `
 .afb-widget{--afb-accent:#3b82f6;font-family:system-ui,-apple-system,sans-serif;max-width:380px}
@@ -58,7 +60,7 @@ function mountFeedbackWidget(target, options) {
   root.appendChild(style);
   const types = elem("div", "afb-types");
   types.setAttribute("role", "radiogroup");
-  types.setAttribute("aria-label", "Feedback type");
+  types.setAttribute("aria-label", copy.typeGroup);
   const makeType = (t, label) => {
     const b = elem("button", "afb-type");
     b.type = "button";
@@ -74,7 +76,7 @@ function mountFeedbackWidget(target, options) {
   types.append(bugBtn, featBtn);
   const form = document.createElement("form");
   form.className = "afb-form";
-  form.setAttribute("aria-label", copy.submit);
+  form.setAttribute("aria-label", copy.formLabel);
   form.noValidate = true;
   const titleInput = elem("input", "afb-title");
   titleInput.type = "text";
