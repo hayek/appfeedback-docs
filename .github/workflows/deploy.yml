@@ -23,9 +23,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Build with Astro
-        uses: withastro/action@v4 # auto-detects pnpm, installs, runs `astro build`, uploads the artifact
+        uses: withastro/action@v6 # auto-detects pnpm, installs, runs `astro build`, uploads the artifact
   deploy:
     needs: build
     runs-on: ubuntu-latest
@@ -34,4 +34,4 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
