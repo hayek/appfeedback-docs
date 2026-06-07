@@ -21,6 +21,7 @@ export default defineConfig({
             { label: 'Overview', link: '/' },
             { label: 'Quickstart', link: '/guides/quickstart/' },
             { label: 'Installation', link: '/guides/installation/' },
+            { label: 'Playground', link: '/playground/', badge: 'Live' },
           ],
         },
         {

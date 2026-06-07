@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="AppFeedback">
+  <rect width="32" height="32" rx="7" fill="#10151f"/>
+  <!-- speech bubble: feedback in, issue out -->
+  <path d="M7 9.5A2.5 2.5 0 0 1 9.5 7h13A2.5 2.5 0 0 1 25 9.5v9a2.5 2.5 0 0 1-2.5 2.5H14l-4.4 3.4A.6.6 0 0 1 8.6 24v-2.7A2.5 2.5 0 0 1 7 18.9z" fill="#e6a019"/>
+  <!-- check: feedback resolved -->
+  <path d="M11.5 14.2l3 3 6-6.4" fill="none" stroke="#10151f" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

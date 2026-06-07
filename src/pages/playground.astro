@@ -1,0 +1,176 @@
+---
+import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro'
+---
+
+<StarlightPage
+  frontmatter={{
+    title: 'Playground',
+    description: 'Try the real AppFeedback web widget live — and watch the exact, byte-for-byte GitHub issue it would create.',
+    template: 'splash',
+    tableOfContents: false,
+  }}
+>
+  <p>
+    This is the <strong>real</strong> <code>@appfeedback/widget</code>, running in your browser.
+    Fill it in and submit — nothing is sent to GitHub. Instead, the panel on the right shows the
+    <strong>exact issue body and labels</strong> the SDK would post, produced by the same
+    <code>formatIssueBody</code> every platform shares. That output is byte-identical on Apple,
+    Android, and Web.
+  </p>
+
+  <div id="afb-playground-root">
+    <div class="afb-pane">
+      <h2 class="afb-pane-h">The widget</h2>
+      <div id="afb-widget-host"></div>
+    </div>
+    <div class="afb-pane">
+      <h2 class="afb-pane-h">The GitHub issue it would create</h2>
+      <div id="afb-issue-preview" class="afb-empty">
+        Submit the form to see the byte-exact issue body and labels.
+      </div>
+    </div>
+  </div>
+
+  <p class="afb-pg-foot">
+    Want this for real? It takes <a href="/appfeedback-docs/guides/quickstart/">three lines</a>, and on
+    the web it talks only to <a href="/appfeedback-docs/guides/relay/">a relay you host</a>.
+  </p>
+</StarlightPage>
+
+<style is:global>
+  #afb-playground-root {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+    gap: 1.5rem;
+    margin: 2rem 0 1rem;
+  }
+  @media (max-width: 56rem) {
+    #afb-playground-root { grid-template-columns: 1fr; }
+  }
+  #afb-playground-root .afb-pane-h {
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--sl-color-gray-3);
+    margin: 0 0 0.75rem;
+    border: 0;
+  }
+  #afb-widget-host {
+    border: 1px solid var(--sl-color-gray-5);
+    border-radius: 12px;
+    padding: 1.25rem;
+    background: var(--sl-color-black);
+  }
+  #afb-issue-preview {
+    border: 1px solid var(--sl-color-gray-5);
+    border-radius: 12px;
+    padding: 1.25rem;
+    background:
+      linear-gradient(var(--sl-color-black), var(--sl-color-black)) padding-box,
+      repeating-linear-gradient(0deg, transparent, transparent 23px, color-mix(in srgb, var(--sl-color-accent) 12%, transparent) 24px) border-box;
+    min-height: 12rem;
+    font-size: 0.85rem;
+  }
+  #afb-issue-preview.afb-empty {
+    color: var(--sl-color-gray-3);
+    font-style: italic;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+  #afb-issue-preview .afb-pre-meta {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    margin-bottom: 0.6rem;
+  }
+  #afb-issue-preview .afb-pre-num {
+    font-family: var(--sl-font-mono, ui-monospace, monospace);
+    color: var(--sl-color-accent-high);
+    font-weight: 700;
+  }
+  #afb-issue-preview .afb-pre-title { font-weight: 600; }
+  #afb-issue-preview .afb-pre-labels {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-bottom: 0.85rem;
+  }
+  #afb-issue-preview .afb-pre-label {
+    font-size: 0.7rem;
+    font-family: var(--sl-font-mono, ui-monospace, monospace);
+    padding: 0.1rem 0.5rem;
+    border-radius: 999px;
+    border: 1px solid color-mix(in srgb, var(--sl-color-accent) 45%, transparent);
+    color: var(--sl-color-accent-high);
+    background: color-mix(in srgb, var(--sl-color-accent) 12%, transparent);
+  }
+  #afb-issue-preview .afb-pre-body {
+    white-space: pre-wrap;
+    word-break: break-word;
+    font-family: var(--sl-font-mono, ui-monospace, monospace);
+    font-size: 0.8rem;
+    line-height: 1.55;
+    margin: 0;
+    color: var(--sl-color-gray-1);
+    background: transparent;
+    border: 0;
+    padding: 0.75rem 0 0;
+    border-top: 1px dashed var(--sl-color-gray-5);
+  }
+  .afb-pg-foot { color: var(--sl-color-gray-3); font-size: 0.9rem; }
+</style>
+
+<script is:inline type="module">
+  import { mountFeedbackWidget, formatIssueBody, labelsFor } from '/appfeedback-docs/playground/afb-widget.mjs'
+
+  const host = document.getElementById('afb-widget-host')
+  const preview = document.getElementById('afb-issue-preview')
+
+  // A mock transport: instead of posting to GitHub, it renders the exact issue
+  // the SDK would create. submit() receives the same (report, deviceInfo) a real
+  // transport would, so the preview is the genuine wire-format output.
+  const mockTransport = {
+    async submit(report, deviceInfo) {
+      await new Promise((resolve) => setTimeout(resolve, 650))
+      const number = 100 + Math.floor(Math.random() * 900)
+
+      preview.classList.remove('afb-empty')
+      preview.replaceChildren()
+
+      const meta = document.createElement('div')
+      meta.className = 'afb-pre-meta'
+      const num = document.createElement('span')
+      num.className = 'afb-pre-num'
+      num.textContent = '#' + number
+      const title = document.createElement('span')
+      title.className = 'afb-pre-title'
+      title.textContent = report.title
+      meta.append(num, title)
+
+      const labels = document.createElement('div')
+      labels.className = 'afb-pre-labels'
+      for (const label of labelsFor(report.type)) {
+        const chip = document.createElement('span')
+        chip.className = 'afb-pre-label'
+        chip.textContent = label
+        labels.append(chip)
+      }
+
+      const body = document.createElement('pre')
+      body.className = 'afb-pre-body'
+      body.textContent = formatIssueBody(report, deviceInfo)
+
+      preview.append(meta, labels, body)
+      return number
+    },
+  }
+
+  mountFeedbackWidget(host, {
+    transport: mockTransport,
+    appName: 'AppFeedback Docs',
+    appVersion: '1.0.0',
+    theme: { accent: '#e6a019' },
+  })
+</script>
