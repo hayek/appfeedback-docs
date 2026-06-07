@@ -86,18 +86,42 @@ The web SDK never holds a GitHub token — it talks to a [relay](../relay/) you 
 </TabItem>
 <TabItem label="Android (Kotlin)">
 
-<Aside type="caution">The Android **core** (models, formatter/parser, transport interface) ships today and is byte-exact-verified against the shared conformance suite. The concrete transports and the Compose UI are in progress.</Aside>
+<Steps>
 
-```kotlin
-import com.appfeedback.core.*
+1. Add the dependency (see [Installation](../installation/)). The `:android` module bundles the shared core plus the Compose UI.
 
-val report = FeedbackReport(type = FeedbackType.BUG, title = "Crash", description = "Steps…")
-val device = DeviceInfo("Acme", "1.0", "1", Build.MODEL, "Android", Build.VERSION.RELEASE)
+2. Build a client once at app start — `androidFeedbackClient` fills the device-info block from `android.os.Build`:
 
-// Produces the exact GitHub issue body the inbox parses — identical to Apple & Web.
-val body = IssueBodyFormatter.format(report, device)
-val labels = IssueBodyFormatter.labels(report.type) // ["bug", "user-submitted"]
-```
+   ```kotlin
+   import com.appfeedback.android.androidFeedbackClient
+   import com.appfeedback.core.*
+
+   val client = androidFeedbackClient(
+     transport = GitHubDirectTransport(owner = "acme", repo = "feedback", token = token),
+     appName = "Acme",
+     appVersion = "1.0.0",
+   )
+   ```
+
+3. Submit a report — `submit` returns the new issue number:
+
+   ```kotlin
+   val issueNumber = client.submit(
+     FeedbackReport(type = FeedbackType.BUG, title = "Crash on launch", description = "Steps to reproduce…")
+   )
+   ```
+
+4. Or drop in the themeable Compose sheet:
+
+   ```kotlin
+   import com.appfeedback.android.FeedbackSheet
+
+   FeedbackSheet(client = client, onSubmitted = { number -> /* dismiss, toast… */ })
+   ```
+
+</Steps>
+
+<Aside title="Where does the token live?">A `GitHubDirectTransport` token stays in the app's secure storage — acceptable for a signed native app. To keep the token off the device, point a `RelayTransport` at a relay you control. See the [security model](../security/).</Aside>
 
 </TabItem>
 </Tabs>

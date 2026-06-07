@@ -42,9 +42,11 @@ import { Tabs, TabItem, Card, CardGrid } from '@astrojs/starlight/components'
   </TabItem>
   <TabItem label="Kotlin">
     ```kotlin
-    // The Android core ships today (byte-exact, conformance-verified).
-    // The client transport + Compose UI are in progress.
-    val body = IssueBodyFormatter.format(report, deviceInfo)
+    val client = androidFeedbackClient(
+      transport = GitHubDirectTransport(owner = "acme", repo = "feedback", token = token),
+      appName = "Acme", appVersion = "1.0.0",
+    )
+    client.submit(FeedbackReport(type = FeedbackType.BUG, title = "Crash on launch", description = "Steps…"))
     ```
   </TabItem>
 </Tabs>
@@ -59,7 +61,7 @@ import { Tabs, TabItem, Card, CardGrid } from '@astrojs/starlight/components'
     On the web, the SDK talks only to a relay **you** deploy — Cloudflare, Firebase, Appwrite, or your own. Your GitHub credential never ships to the browser.
   </Card>
   <Card title="Drop-in UI" icon="mobile-android">
-    A themeable feedback sheet on Apple and a feedback widget + React component on the web — or go headless and submit from your own UI.
+    A themeable feedback sheet on Apple and Android (Compose), plus a feedback widget + React component on the web — or go headless and submit from your own UI.
   </Card>
   <Card title="GitHub is the backend" icon="github">
     No new service to run. Feedback lands as a labelled GitHub issue your team already triages; the AppFeedback inbox reads it straight back.

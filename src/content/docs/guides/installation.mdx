@@ -9,7 +9,7 @@ import { Tabs, TabItem, Aside } from '@astrojs/starlight/components'
 The code for all three platforms is public on GitHub. Formal registry releases are rolling out:
 - **Apple** — installable from the SwiftPM repo today.
 - **Web** — `@appfeedback/*` packages build and pass their suites; **npm publishing is in progress**. During early access, install from the [`appfeedback-web`](https://github.com/hayek/appfeedback-web) workspace.
-- **Android** — core is available; **Maven Central publishing and the UI module are in progress**.
+- **Android** — the shared core (transports + `FeedbackClient`) and the Compose UI module (`FeedbackSheet`) ship and are conformance-tested; **Maven Central publishing is in progress**. During early access, build from the [`appfeedback-android`](https://github.com/hayek/appfeedback-android) repo.
 </Aside>
 
 <Tabs syncKey="lang">
@@ -58,7 +58,7 @@ Maven Central coordinates (publishing in progress):
 ```kotlin
 dependencies {
   implementation("io.github.hayek:appfeedback-android:0.1.0")
-  // implementation("io.github.hayek:appfeedback-android-compose:0.1.0") // UI, in progress
+  implementation("io.github.hayek:appfeedback-android-compose:0.1.0") // drop-in FeedbackSheet
 }
 ```
 
