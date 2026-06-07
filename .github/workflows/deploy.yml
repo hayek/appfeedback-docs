@@ -23,7 +23,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Build with Astro
         uses: withastro/action@v4 # auto-detects pnpm, installs, runs `astro build`, uploads the artifact
   deploy:
