@@ -42,10 +42,17 @@ rm -rf "$OUT/swift"; mkdir -p "$OUT/swift"
 # Keep DocC's own 404.html too as belt-and-suspenders.
 cp "$OUT/swift/index.html" "$OUT/swift/404.html"
 
-echo "==> Kotlin (Dokka, com.appfeedback.core)"
+echo "==> Kotlin core (Dokka, com.appfeedback.core)"
 rm -rf "$OUT/kotlin"; mkdir -p "$OUT/kotlin"
 ( cd "$ANDROID_DIR" && JAVA_HOME="$JDK21" ./gradlew :dokkaGeneratePublicationHtml --no-daemon )
 cp -R "$ANDROID_DIR/build/dokka/html/." "$OUT/kotlin/"
+
+echo "==> Kotlin Compose UI (Dokka, :android module)"
+rm -rf "$OUT/kotlin-compose"; mkdir -p "$OUT/kotlin-compose"
+# The :android module is an AGP/Compose library, so Dokka also needs ANDROID_HOME.
+( cd "$ANDROID_DIR" && JAVA_HOME="$JDK21" ANDROID_HOME="${ANDROID_HOME:-/opt/homebrew/share/android-commandlinetools}" \
+    ./gradlew :android:dokkaGeneratePublicationHtml --no-daemon )
+cp -R "$ANDROID_DIR/android/build/dokka/html/." "$OUT/kotlin-compose/"
 
 echo "==> TypeScript (TypeDoc, all 4 @appfeedback/* packages)"
 rm -rf "$OUT/typescript"; mkdir -p "$OUT/typescript"

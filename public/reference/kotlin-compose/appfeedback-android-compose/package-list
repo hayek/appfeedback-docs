@@ -1,0 +1,17 @@
+$dokka.format:html-v1
+$dokka.linkExtension:html
+$dokka.location:com.appfeedback.android////PointingToDeclaration/appfeedback-android-compose/com.appfeedback.android/index.html
+$dokka.location:com.appfeedback.android//FeedbackSheet/#[Error type: Unresolved type for FeedbackClient]#[Error type: Unresolved type for Modifier]#[Error type: Unresolved type for FeedbackType]#kotlin.Function1[kotlin.Int,kotlin.Unit]#kotlin.Function1[kotlin.Throwable,kotlin.Unit]/PointingToDeclaration/appfeedback-android-compose/com.appfeedback.android/-feedback-sheet.html
+$dokka.location:com.appfeedback.android//androidFeedbackClient/#[Error type: Unresolved type for FeedbackTransport]#kotlin.String#kotlin.String#kotlin.String/PointingToDeclaration/appfeedback-android-compose/com.appfeedback.android/android-feedback-client.html
+$dokka.location:com.appfeedback.android//currentDeviceInfo/#kotlin.String#kotlin.String#kotlin.String/PointingToDeclaration/appfeedback-android-compose/com.appfeedback.android/current-device-info.html
+$dokka.location:com.appfeedback.android/FeedbackSheetState.Error///PointingToDeclaration/appfeedback-android-compose/com.appfeedback.android/-feedback-sheet-state/-error/index.html
+$dokka.location:com.appfeedback.android/FeedbackSheetState.Error/Error/#kotlin.Throwable/PointingToDeclaration/appfeedback-android-compose/com.appfeedback.android/-feedback-sheet-state/-error/-error.html
+$dokka.location:com.appfeedback.android/FeedbackSheetState.Error/cause/#/PointingToDeclaration/appfeedback-android-compose/com.appfeedback.android/-feedback-sheet-state/-error/cause.html
+$dokka.location:com.appfeedback.android/FeedbackSheetState.Idle///PointingToDeclaration/appfeedback-android-compose/com.appfeedback.android/-feedback-sheet-state/-idle/index.html
+$dokka.location:com.appfeedback.android/FeedbackSheetState.Invalid///PointingToDeclaration/appfeedback-android-compose/com.appfeedback.android/-feedback-sheet-state/-invalid/index.html
+$dokka.location:com.appfeedback.android/FeedbackSheetState.Submitting///PointingToDeclaration/appfeedback-android-compose/com.appfeedback.android/-feedback-sheet-state/-submitting/index.html
+$dokka.location:com.appfeedback.android/FeedbackSheetState.Success///PointingToDeclaration/appfeedback-android-compose/com.appfeedback.android/-feedback-sheet-state/-success/index.html
+$dokka.location:com.appfeedback.android/FeedbackSheetState.Success/Success/#kotlin.Int/PointingToDeclaration/appfeedback-android-compose/com.appfeedback.android/-feedback-sheet-state/-success/-success.html
+$dokka.location:com.appfeedback.android/FeedbackSheetState.Success/issueNumber/#/PointingToDeclaration/appfeedback-android-compose/com.appfeedback.android/-feedback-sheet-state/-success/issue-number.html
+$dokka.location:com.appfeedback.android/FeedbackSheetState///PointingToDeclaration/appfeedback-android-compose/com.appfeedback.android/-feedback-sheet-state/index.html
+com.appfeedback.android
