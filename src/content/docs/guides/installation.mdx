@@ -7,7 +7,7 @@ import { Tabs, TabItem, Aside } from '@astrojs/starlight/components'
 
 <Aside title="Release status">
 The code for all three platforms is public on GitHub. Formal registry releases are rolling out:
-- **Apple** — installable from the SwiftPM repo today.
+- **Apple** — released: add the SwiftPM package at `from: "0.1.0"`.
 - **Web** — `@appfeedback/*` packages build and pass their suites; **npm publishing is in progress**. During early access, install from the [`appfeedback-web`](https://github.com/hayek/appfeedback-web) workspace.
 - **Android** — the shared core (transports + `FeedbackClient`) and the Compose UI module (`FeedbackSheet`) ship and are conformance-tested; **Maven Central publishing is in progress**. During early access, build from the [`appfeedback-android`](https://github.com/hayek/appfeedback-android) repo.
 </Aside>
@@ -18,7 +18,7 @@ The code for all three platforms is public on GitHub. Formal registry releases a
 **Swift Package Manager** — add to `Package.swift`:
 
 ```swift
-.package(url: "https://github.com/hayek/AppFeedbackSDK", branch: "main"),
+.package(url: "https://github.com/hayek/AppFeedbackSDK", from: "0.1.0"),
 ```
 
 Then depend on the products you need:
